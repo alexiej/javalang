@@ -2,12 +2,12 @@ from setuptools import setup
 
 
 setup(
-    name="javalang",
-    packages=["javalang"],
-    version="0.13.0",
-    author="Chris Thunes",
-    author_email="cthunes@brewtab.com",
-    url="http://github.com/c2nes/javalang",
+    name="javalang-source",
+    packages=["javalang-source"],
+    version="0.14.0",
+    author="Arkadiusz Klemenko",
+    author_email="alexiej@wp.pl",
+    url="http://github.com/alexiej/javalang",
     description="Pure Python Java parser and tools",
     classifiers=[
         "Programming Language :: Python",
@@ -19,8 +19,11 @@ setup(
     ],
     long_description="""\
 ========
-javalang
+Javalang Source
 ========
+
+Based on the https://github.com/c2nes/javalang 
+new version that added get_source, and end_position of the Node.
 
 javalang is a pure Python library for working with Java source
 code. javalang provies a lexer and parser targeting Java 8. The
