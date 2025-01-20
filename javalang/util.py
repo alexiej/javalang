@@ -1,3 +1,34 @@
+from typing import List
+from typing_extensions import LiteralString
+
+
+def get_source(node, code_lines: List[LiteralString]):
+    if node.position is None:
+        return ""
+
+    if node.end_position is None:
+        return code_lines[node.position.line - 1]
+
+    # Convert to zero-based index for Python lists
+    start_line = node.position.line - 1
+    end_line = node.end_position.line - 1
+    start_column = node.position.column - 1
+    end_column = node.end_position.column
+
+    if start_line == end_line:
+        # Single line selection
+        return code_lines[start_line][start_column:end_column]
+    else:
+        # Multi-line selection
+        lines = []
+        # Add the first line from start_column to the end
+        lines.append(code_lines[start_line][start_column:])
+        # Add all middle lines fully
+        lines.extend(code_lines[start_line + 1 : end_line])
+        # Add the last line up to end_column
+        lines.append(code_lines[end_line][:end_column])
+
+        return "\n".join(lines)
 
 
 class LookAheadIterator(object):
@@ -29,7 +60,7 @@ class LookAheadIterator(object):
         return self.value
 
     def look(self, i=0):
-        """ Look ahead of the iterable by some number of values with advancing
+        """Look ahead of the iterable by some number of values with advancing
         past them.
 
         If the requested look ahead is past the end of the iterable then None is
@@ -41,8 +72,9 @@ class LookAheadIterator(object):
 
         if length <= i:
             try:
-                self.look_ahead.extend([next(self.iterable)
-                    for _ in range(length, i + 1)])
+                self.look_ahead.extend(
+                    [next(self.iterable) for _ in range(length, i + 1)]
+                )
             except StopIteration:
                 return self.default
 
@@ -64,11 +96,11 @@ class LookAheadIterator(object):
             self.pop_marker(False)
 
     def push_marker(self):
-        """ Push a marker on to the marker stack """
+        """Push a marker on to the marker stack"""
         self.markers.append(list())
 
     def pop_marker(self, reset):
-        """ Pop a marker off of the marker stack. If reset is True then the
+        """Pop a marker off of the marker stack. If reset is True then the
         iterator will be returned to the state it was in before the
         corresponding call to push_marker().
 
@@ -86,6 +118,7 @@ class LookAheadIterator(object):
         else:
             # If there are not more markers in the stack then discard the values
             pass
+
 
 class LookAheadListIterator(object):
     def __init__(self, iterable):
@@ -116,7 +149,7 @@ class LookAheadListIterator(object):
         return self.value
 
     def look(self, i=0):
-        """ Look ahead of the iterable by some number of values with advancing
+        """Look ahead of the iterable by some number of values with advancing
         past them.
 
         If the requested look ahead is past the end of the iterable then None is
@@ -146,11 +179,11 @@ class LookAheadListIterator(object):
             self.pop_marker(False)
 
     def push_marker(self):
-        """ Push a marker on to the marker stack """
+        """Push a marker on to the marker stack"""
         self.saved_markers.append(self.marker)
 
     def pop_marker(self, reset):
-        """ Pop a marker off of the marker stack. If reset is True then the
+        """Pop a marker off of the marker stack. If reset is True then the
         iterator will be returned to the state it was in before the
         corresponding call to push_marker().
 
@@ -162,4 +195,3 @@ class LookAheadListIterator(object):
             self.marker = saved
         elif self.saved_markers:
             self.saved_markers[-1] = saved
-

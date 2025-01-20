@@ -20,9 +20,11 @@ class TestTokenizer(unittest.TestCase):
 
     def test_tokenizer_javadoc(self):
         # Given
-        code = "/**\n" \
-               " * See {@link BlockTokenSecretManager#setKeys(ExportedBlockKeys)}\n" \
-               " */"
+        code = (
+            "/**\n"
+            " * See {@link BlockTokenSecretManager#setKeys(ExportedBlockKeys)}\n"
+            " */"
+        )
 
         # When
         tokens = list(tokenizer.tokenize(code))
@@ -188,5 +190,6 @@ int k;
         self.assertEqual(token[0].position.column, 1)
         self.assertEqual(token[3].position.column, 1)
 
-if __name__=="__main__":
+
+if __name__ == "__main__":
     unittest.main()
