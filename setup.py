@@ -2,12 +2,12 @@ from setuptools import setup
 
 
 setup(
-    name="javalang-source",
-    packages=["javalang-source"],
+    name="javalang",
+    packages=["javalang"],
     version="0.14.0",
     author="Arkadiusz Klemenko",
     author_email="alexiej@wp.pl",
-    url="http://github.com/alexiej/javalang",
+    url="https://github.com/alexiej/javalang",
     description="Pure Python Java parser and tools",
     classifiers=[
         "Programming Language :: Python",
